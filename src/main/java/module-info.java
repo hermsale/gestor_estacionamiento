@@ -13,6 +13,6 @@ module com.example.gestorestacionamientofx {
 
     opens com.example.gestorestacionamientofx to javafx.fxml;
     exports com.example.gestorestacionamientofx;
-    exports com.example.gestorestacionamientofx.controllers;
-    opens com.example.gestorestacionamientofx.controllers to javafx.fxml;
+    exports com.example.gestorestacionamientofx.Controller;
+    opens com.example.gestorestacionamientofx.Controller to javafx.fxml;
 }

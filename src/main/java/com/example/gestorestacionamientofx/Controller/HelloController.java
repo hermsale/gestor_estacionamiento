@@ -1,4 +1,4 @@
-package com.example.gestorestacionamientofx.controllers;
+package com.example.gestorestacionamientofx.Controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
