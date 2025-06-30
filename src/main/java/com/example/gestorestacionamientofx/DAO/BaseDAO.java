@@ -12,6 +12,7 @@ public abstract class BaseDAO<T> implements ICrud<T> {
 
     protected Connection conn;
 
+//    creo una instancia de conexion con la BD
     public BaseDAO() {
         try {
             this.conn = ConexionDB.getInstance().getConnection();
