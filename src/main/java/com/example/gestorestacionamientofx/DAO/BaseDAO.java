@@ -9,8 +9,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public abstract class BaseDAO<T> implements ICrud<T> {
+//    El BaseDAO centraliza la conexión
 
     protected Connection conn;
+
 
     public BaseDAO() {
         try {

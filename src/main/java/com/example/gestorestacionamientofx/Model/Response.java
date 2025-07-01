@@ -2,7 +2,11 @@ package com.example.gestorestacionamientofx.Model;
 
 import java.util.List;
 
+//Clase genérica que encapsula el resultado de cualquier operación
+// sirve para leer un vehiculo, leer todos los tipos de contrato, listar las cocheras disponibles, listar los servicios,
+
 public class Response<T>{
+
     private boolean success;
     private String message;
     private T entity;
