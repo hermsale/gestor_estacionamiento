@@ -1,24 +1,48 @@
 package com.example.gestorestacionamientofx.Model;
 
+import java.math.BigDecimal;
+
 public class TipoContrato {
-    private int id;
+    private int id_contrato;
     private String nombreContrato;
-    private double precioBaseCochera;
-    private double descuentoServicio;
+    private BigDecimal precioBaseCochera;
+    private BigDecimal descuentoServicio;
 
 //    Tipos de contrato que se puede seleccionar para el ingreso de un vehiculo
-    private TipoContrato(int id, String nombreContrato, double precioBaseCochera, double descuentoServicio) {
-        this.id = id;
+public TipoContrato(int id_contrato, String nombreContrato, BigDecimal precioBaseCochera, BigDecimal descuentoServicio) {
+        this.id_contrato = id_contrato;
         this.nombreContrato = nombreContrato;
         this.precioBaseCochera = precioBaseCochera;
         this.descuentoServicio = descuentoServicio;
     }
 
-    public int getId() {
-        return id;
+//    creo el contructor vacio que requiere javaFx
+    public TipoContrato() {
+
     }
 
-    public double getDescuentoServicio() {
+//creo los setter que requiere javaFX
+    public void setNombreContrato(String nombreContrato) {
+        this.nombreContrato = nombreContrato;
+    }
+
+    public void setId(int id_contrato) {
+        this.id_contrato = id_contrato;
+    }
+
+    public void setPrecioBaseCochera(BigDecimal precioBaseCochera) {
+        this.precioBaseCochera = precioBaseCochera;
+    }
+
+    public void setDescuentoServicio(BigDecimal descuentoServicio) {
+        this.descuentoServicio = descuentoServicio;
+    }
+
+    public int getId() {
+        return id_contrato;
+    }
+
+    public BigDecimal getDescuentoServicio() {
         return descuentoServicio;
     }
 
@@ -26,7 +50,7 @@ public class TipoContrato {
         return nombreContrato;
     }
 
-    public double getPrecioBaseCochera() {
+    public BigDecimal getPrecioBaseCochera() {
         return precioBaseCochera;
     }
 
@@ -34,10 +58,10 @@ public class TipoContrato {
     @Override
     public String toString() {
         return "[Tipo de Contrato: " +
-                "id=" + id +
+                "id=" + id_contrato +
                 ", Tipo de contrato='" + nombreContrato + '\'' +
                 ", precio base= " + precioBaseCochera +
-                ", Descuento aplicado a servicio= " + (descuentoServicio*100)+"%" +
+                ", Descuento aplicado a servicio= " + (descuentoServicio)+"%" +
                 ']';
     }
 }

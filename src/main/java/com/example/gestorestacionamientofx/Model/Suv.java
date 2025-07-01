@@ -2,8 +2,10 @@ package com.example.gestorestacionamientofx.Model;
 
 public class Suv extends Vehiculo{
 
+
+
     public Suv(String patente) {
-        super(patente);
+        super(patente, "SUV");
     }
 
     //    aplico un recargo del 10%

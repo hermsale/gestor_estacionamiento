@@ -2,7 +2,7 @@ package com.example.gestorestacionamientofx.Model;
 
 public class Sedan extends Vehiculo{
     public Sedan(String patente) {
-        super(patente);
+        super(patente,"Sedan");
     }
 
 //    implemento el metodo abstracto
