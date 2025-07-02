@@ -15,23 +15,29 @@ public class TipoContratoDAO extends BaseDAO<TipoContrato> {
 
 //    metodo para leer todos los contratos
     @Override
-    public Response<TipoContrato> readAll() {
+    public Response<List<TipoContrato>> readAll() {
         List<TipoContrato> lista = new ArrayList<>();
         String sql = "SELECT * FROM tipo_contrato";
-
+        System.out.println("Consultando todos los tipos de contrato ");
         try (PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 TipoContrato tipo = new TipoContrato();
                 tipo.setId(rs.getInt("id_tipo_contrato"));
-                tipo.setNombreContrato(rs.getString("nombre_contrato"));
+                tipo.setNombreContrato(rs.getString("descripcion_contrato"));
                 tipo.setDescuentoServicio(rs.getBigDecimal("descuento_servicio"));
-                tipo.setPrecioBaseCochera(rs.getBigDecimal("precio_base_cochera"));
+                tipo.setPrecioBaseCochera(rs.getBigDecimal("precio_base"));
+
+                System.out.println("Tipo contrato: " + tipo.getNombreContrato()
+                        + ", precio base " + tipo.getPrecioBaseCochera()
+                        + ", descuento_servicio " + tipo.getDescuentoServicio()
+                );
+
                 lista.add(tipo);
             }
 
-            return new Response<>(true, "Tipos de contrato obtenidos", lista);
+            return new Response<List<TipoContrato>>(true, "Tipos de contrato obtenidos", lista);
 
         } catch (SQLException e) {
             return new Response<>(false, "Error al obtener tipos de contrato: " + e.getMessage(), null);

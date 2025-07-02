@@ -2,6 +2,8 @@ package com.example.gestorestacionamientofx.DAO;
 
 import com.example.gestorestacionamientofx.Model.Response;
 
+import java.util.List;
+
 // Todo DAO<T> que implemente esto, debe tener los métodos create, read, update, delete, readAll
 public interface ICrud<T> {
     Response<T> create(T entity);
@@ -12,5 +14,5 @@ public interface ICrud<T> {
 
     Response<T> delete(int id);
 
-    Response<T> readAll();
+    Response<List<T>> readAll();
 }

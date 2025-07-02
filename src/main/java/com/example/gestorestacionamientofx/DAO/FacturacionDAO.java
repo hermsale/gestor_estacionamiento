@@ -40,7 +40,7 @@ public class FacturacionDAO extends BaseDAO<Facturacion> {
 
 //    metodo para obtener todas las facturas emitidas
     @Override
-    public Response<Facturacion> readAll() {
+    public Response<List<Facturacion>> readAll() {
         List<Facturacion> lista = new ArrayList<>();
         String sql = "SELECT * FROM facturacion";
 
@@ -61,7 +61,7 @@ public class FacturacionDAO extends BaseDAO<Facturacion> {
                 lista.add(factura);
             }
 
-            return new Response<>(true, "Facturas obtenidas", lista);
+            return new Response<List<Facturacion>>(true, "Facturas obtenidas", lista);
 
         } catch (SQLException e) {
             return new Response<>(false, "Error al obtener facturas: " + e.getMessage(), null);

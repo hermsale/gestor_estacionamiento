@@ -57,12 +57,7 @@ public TipoContrato(int id_contrato, String nombreContrato, BigDecimal precioBas
 //    se reflejan los tipos de contrato disponibles, su precio y dependiendo el tipo de contrato, se aplica o no un descuento
     @Override
     public String toString() {
-        return "[Tipo de Contrato: " +
-                "id=" + id_contrato +
-                ", Tipo de contrato='" + nombreContrato + '\'' +
-                ", precio base= " + precioBaseCochera +
-                ", Descuento aplicado a servicio= " + (descuentoServicio)+"%" +
-                ']';
+        return nombreContrato;
     }
 }
 

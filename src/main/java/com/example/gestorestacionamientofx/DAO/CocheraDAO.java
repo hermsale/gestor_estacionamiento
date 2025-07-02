@@ -2,6 +2,7 @@ package com.example.gestorestacionamientofx.DAO;
 
 import com.example.gestorestacionamientofx.Model.*;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,7 +18,7 @@ public class CocheraDAO extends BaseDAO<Cochera> {
 //    me falta instanciar esto . crearlo.
 //    VehiculoDAO vehiculoDAO = new VehiculoDAO();
     @Override
-    public Response<Cochera> readAll() {
+    public Response<List<Cochera>> readAll() {
         List<Cochera> cocheras = new ArrayList<>();
         String sql = "SELECT * FROM cocheras";
 
@@ -46,7 +47,18 @@ public class CocheraDAO extends BaseDAO<Cochera> {
                 cochera.setFechaSalida(tsSalida != null ? tsSalida.toLocalDateTime() : null);
 
 
-                cochera.setVehiculo(null); // podés usar VehiculoDAO.read(id_vehiculo) si querés cargarlo
+                // Vehículo
+                String patente = rs.getString("patente");
+                String tipo = rs.getString("descripcion");
+
+                Vehiculo vehiculo = switch (tipo.toUpperCase()) {
+                    case "SEDAN" -> new Sedan(patente);
+                    case "SUV" -> new Suv(patente);
+                    case "PICKUP" -> new Pickup(patente);
+                    default -> null;
+                };
+
+                cochera.setVehiculo(vehiculo);
 
 
                 // Tabla Contrato - metodo Read
@@ -66,11 +78,13 @@ public class CocheraDAO extends BaseDAO<Cochera> {
                         cochera.setServicio(servicioResp.getEntity());
                     }
                 }
+
+//                agrego todo a cocheras
                 cocheras.add(cochera);
             }
 
 //            envio mensaje por las cocheras recibidas
-            return new Response<>(true,"Las cocheras se obtuvieron correctamente ",cocheras );
+            return new Response<List<Cochera>>(true,"Las cocheras se obtuvieron correctamente ",cocheras );
         }catch(SQLException e){
 //            en caso que falle, envio mensaje
             return new Response<>(false,"Error al obtener las cocheras: "+e.getMessage(),null);
@@ -82,9 +96,30 @@ public class CocheraDAO extends BaseDAO<Cochera> {
         return null;
     }
 
+//    actualizar base de datos con cochera reservada
     @Override
-    public Response<Cochera> update(Cochera entity) {
-        return null;
+    public Response<Cochera> update(Cochera cochera) {
+        String sql = "UPDATE cochera SET fecha_entrada = ?, id_tipo_contrato = ?, id_servicio = ?, estado = ?, patente = ?, descripcion = ?, recargo = ? WHERE codigo_cochera = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setObject(1, cochera.getFechaIngreso()); // LocalDateTime
+            stmt.setInt(2, cochera.getContrato().getId());
+            stmt.setInt(3, cochera.getServicio().getId_servicio());
+            stmt.setString(4, cochera.getEstadoCochera().name());
+            stmt.setString(5, cochera.getVehiculo().getPatente());
+            stmt.setString(6, cochera.getVehiculo().getDescripcion()); // tipo de vehiculo
+            stmt.setBigDecimal(7, BigDecimal.valueOf(cochera.getVehiculo().obtenerRecargo())); // recargo
+            stmt.setInt(8, cochera.getcodigoCochera());
+
+            int filas = stmt.executeUpdate();
+            if (filas > 0) {
+                return new Response<>(true, "Cochera actualizada con éxito", cochera);
+            } else {
+                return new Response<>(false, "No se encontró la cochera con ese código", null);
+            }
+        } catch (SQLException e) {
+            return new Response<>(false, "Error al actualizar cochera: " + e.getMessage(), null);
+        }
     }
 
     @Override

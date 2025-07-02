@@ -44,10 +44,6 @@ public class Servicio {
 
     @Override
     public String toString() {
-        return "Servicio [" +
-                "Id: " + id_servicio + '\''+
-                "Descripcion: " + descripcionServicio + '\'' +
-                ", Precio: " + costoServicio +
-                ']';
+        return descripcionServicio+" - $"+costoServicio;
     }
 }

@@ -7,6 +7,7 @@ import com.example.gestorestacionamientofx.Model.Response;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 public abstract class BaseDAO<T> implements ICrud<T> {
 //    El BaseDAO centraliza la conexión
@@ -35,5 +36,7 @@ public abstract class BaseDAO<T> implements ICrud<T> {
     public abstract Response<T> delete(int id);
 
     @Override
-    public abstract Response<T> readAll();
+//    public abstract Response<T> readAll();
+
+    public abstract Response<List<T>> readAll();
 }

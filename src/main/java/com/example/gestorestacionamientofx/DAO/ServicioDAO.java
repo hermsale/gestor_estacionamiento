@@ -16,22 +16,29 @@ public class ServicioDAO extends BaseDAO<Servicio> {
 
     //    metodo para leer todos los servicios
     @Override
-    public Response<Servicio> readAll() {
+    public Response<List<Servicio>> readAll() {
         List<Servicio> lista = new ArrayList<>();
         String sql = "SELECT * FROM servicio";
 
+        System.out.println("Consultando todos los servicios ");
         try (PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
+
 
             while (rs.next()) {
                 Servicio servicio = new Servicio();
                 servicio.setId_servicio(rs.getInt("id_servicio"));
-                servicio.setDescripcionServicio(rs.getString("nombre_servicio"));
+                servicio.setDescripcionServicio(rs.getString("descripcion_servicio"));
                 servicio.setCostoServicio(rs.getBigDecimal("precio_base"));
+
+                System.out.println("Servicio leído: id=" + servicio.getId_servicio()
+                        + ", desc=" + servicio.getDescripcionServicio()
+                        + ", costo=" + servicio.getCostoServicio());
                 lista.add(servicio);
             }
 
-            return new Response<>(true, "Tipos de servicios obtenidos", lista);
+            System.out.println("List " +lista.size() + " servicios encontrados" );
+            return new Response<List<Servicio>>(true, "Tipos de servicios obtenidos", lista);
 
         } catch (SQLException e) {
             return new Response<>(false, "Error al obtener tipos de servicios: " + e.getMessage(), null);
@@ -50,7 +57,7 @@ public class ServicioDAO extends BaseDAO<Servicio> {
             stmt.setInt(1, id);
             if (rs.next()) {
                 servicio.setId_servicio(rs.getInt("id_servicio"));
-                servicio.setDescripcionServicio(rs.getString("nombre_servicio"));
+                servicio.setDescripcionServicio(rs.getString("descripcion_servicio"));
                 servicio.setCostoServicio(rs.getBigDecimal("precio_base"));
 
             return new Response<>(true, "Tipo de servicio obtenido", servicio);

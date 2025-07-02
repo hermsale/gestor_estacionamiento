@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 //creo un singletone
 public final class ConexionDB {
-    private static final String URL = "jdbc:mysql://localhost:3306/";
+    private static final String URL = "jdbc:mysql://localhost:3306/gestorcochera";
     private static final String USER = "root";
     private static final String PASSWORD = "";
 
@@ -16,7 +16,9 @@ public final class ConexionDB {
 
     private ConexionDB() throws SQLException {
         try{
-            Class.forName("com.mysql.jdbc.Driver");
+//            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
             this.conn = DriverManager.getConnection(URL, USER, PASSWORD);
 
         }catch(ClassNotFoundException e){
