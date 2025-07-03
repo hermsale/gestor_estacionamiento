@@ -27,7 +27,7 @@ public class PlanoEstacionamientoController {
         return cocheraSeleccionada;
     }
 
-//    vamos a listar las cocheras,
+//    vamos a guardar y listar las cocheras,
     private List<Cochera> listaCocheras;
 
     public void setListaCocheras(List<Cochera> listaCocheras) {

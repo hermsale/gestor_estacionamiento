@@ -18,7 +18,6 @@ public class TipoContratoDAO extends BaseDAO<TipoContrato> {
     public Response<List<TipoContrato>> readAll() {
         List<TipoContrato> lista = new ArrayList<>();
         String sql = "SELECT * FROM tipo_contrato";
-        System.out.println("Consultando todos los tipos de contrato ");
         try (PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
@@ -28,12 +27,6 @@ public class TipoContratoDAO extends BaseDAO<TipoContrato> {
                 tipo.setNombreContrato(rs.getString("descripcion_contrato"));
                 tipo.setDescuentoServicio(rs.getBigDecimal("descuento_servicio"));
                 tipo.setPrecioBaseCochera(rs.getBigDecimal("precio_base"));
-
-                System.out.println("Tipo contrato: " + tipo.getNombreContrato()
-                        + ", precio base " + tipo.getPrecioBaseCochera()
-                        + ", descuento_servicio " + tipo.getDescuentoServicio()
-                );
-
                 lista.add(tipo);
             }
 
@@ -47,27 +40,25 @@ public class TipoContratoDAO extends BaseDAO<TipoContrato> {
 //    metodo para cargar en cocheraDAO
     @Override
     public Response<TipoContrato> read(int id) {
-
-        TipoContrato tipoContrato = new TipoContrato();
-
         String sql = "SELECT * FROM tipo_contrato WHERE id_tipo_contrato = ?";
 
-        try (PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
-            if (rs.next()) {
-                tipoContrato.setId(rs.getInt("id_tipo_contrato"));
-                tipoContrato.setNombreContrato(rs.getString("nombre_contrato"));
-                tipoContrato.setPrecioBaseCochera(rs.getBigDecimal("precio_base"));
-                tipoContrato.setDescuentoServicio(rs.getBigDecimal("descuento_servicio"));
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    TipoContrato tipoContrato = new TipoContrato();
+                    tipoContrato.setId(rs.getInt("id_tipo_contrato"));
+                    tipoContrato.setNombreContrato(rs.getString("descripcion_contrato"));
+                    tipoContrato.setDescuentoServicio(rs.getBigDecimal("descuento_servicio"));
+                    tipoContrato.setPrecioBaseCochera(rs.getBigDecimal("precio_base"));
 
-                return new Response<>(true, "Tipo de contrato obtenido", tipoContrato);
-            }else{
-                return new Response<>(false, "No se encontro el tipo de contrato", null);
+                    return new Response<>(true, "Tipo de contrato obtenido", tipoContrato);
+                } else {
+                    return new Response<>(false, "No se encontró el tipo de contrato", null);
+                }
             }
-        }catch (SQLException e){
-        return new Response<>(false, "Error al obtener tipos de contrato: " + e.getMessage(), null);
+        } catch (SQLException e) {
+            return new Response<>(false, "Error al obtener tipo de contrato: " + e.getMessage(), null);
         }
     }
 

@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,7 +91,7 @@ public class CocheraDAO extends BaseDAO<Cochera> {
         }
     }
 
-//metodo para cargar el estado de cada cochera
+//metodo para cargar el estado de cada cochera - se utiliza para pintar las cocheras de verde o rojo
     public Response<List<Cochera>> readEstado() {
         List<Cochera> cocheras = new ArrayList<>();
         String sql = "SELECT codigo_cochera, estado FROM cochera";
@@ -124,10 +125,17 @@ public class CocheraDAO extends BaseDAO<Cochera> {
         return null;
     }
 
-//    actualizar base de datos con cochera reservada
     @Override
-    public Response<Cochera> update(Cochera cochera) {
-        String sql = "UPDATE cochera SET fecha_entrada = ?, id_tipo_contrato = ?, id_servicio = ?, estado = ?, patente = ?, descripcion = ?, recargo = ? WHERE codigo_cochera = ?";
+    public Response<Cochera> update(Cochera entity) {
+        return null;
+    }
+
+    //    actualizar base de datos con cochera reservada
+//    cuando se ingresa un vehiculo, se autocompleta la fecha y hora,
+//    se elije la cochera, el tipo de contrato, si contrato algun servicio,. estado, patente descripcion (suv, pickup sedan)
+//    y el recargo correspondiente
+    public Response<Cochera> ingresarVehiculo(Cochera cochera) {
+        String sql = "UPDATE cochera SET fecha_entrada = ?, id_tipo_contrato = ?, id_servicio = ?, estado = ?, patente = ?, descripcion = ? WHERE codigo_cochera = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setObject(1, cochera.getFechaIngreso()); // LocalDateTime
@@ -136,8 +144,7 @@ public class CocheraDAO extends BaseDAO<Cochera> {
             stmt.setString(4, cochera.getEstadoCochera().name());
             stmt.setString(5, cochera.getVehiculo().getPatente());
             stmt.setString(6, cochera.getVehiculo().getDescripcion()); // tipo de vehiculo
-            stmt.setBigDecimal(7, BigDecimal.valueOf(cochera.getVehiculo().obtenerRecargo())); // recargo
-            stmt.setInt(8, cochera.getCodigoCochera());
+            stmt.setInt(7, cochera.getCodigoCochera());
 
             int filas = stmt.executeUpdate();
             if (filas > 0) {
@@ -150,9 +157,87 @@ public class CocheraDAO extends BaseDAO<Cochera> {
         }
     }
 
+//    actualizo el estado de la cochera. eliminando los datos
+    public Response<Cochera> liberarCochera(int codigoCochera) {
+        String sql = "UPDATE cochera SET fecha_entrada = NULL, id_servicio = NULL, id_tipo_contrato = NULL, " +
+                "estado = ?, patente = NULL, descripcion = NULL WHERE codigo_cochera = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, EstadoCochera.DISPONIBLE.name());
+            stmt.setInt(2, codigoCochera);
+
+            int filas = stmt.executeUpdate();
+            if (filas > 0) {
+                return new Response<>(true, "Cochera liberada con éxito", null);
+            } else {
+                return new Response<>(false, "No se encontró la cochera con ese código", null);
+            }
+        } catch (SQLException e) {
+            return new Response<>(false, "Error al liberar cochera: " + e.getMessage(), null);
+        }
+
+    }
+
+
+
+//obtengo id por patente
+public Response<Integer> obtenerIdPorPatente(String patente) {
+    String sql = "SELECT codigo_cochera FROM cochera WHERE patente = ? AND estado = 'OCUPADO'";
+
+    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.setString(1, patente);
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            int id = rs.getInt("codigo_cochera");
+            System.out.println("Cochera obtenida: " + id);
+            return new Response<>(true, "Cochera encontrada", id);
+        } else {
+            return new Response<>(false, "No se encontró una cochera ocupada con esa patente", null);
+        }
+    } catch (SQLException e) {
+        return new Response<>(false, "Error al buscar cochera por patente: " + e.getMessage(), null);
+    }
+}
+
+
     @Override
     public Response<Cochera> read(int id) {
-        return null;
+        String sql = "SELECT * FROM cochera WHERE codigo_cochera = ?";
+
+        try(PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                Cochera cochera = new Cochera();
+                cochera.setCodigoCochera(id);
+                cochera.setFechaIngreso(rs.getObject("fecha_entrada", LocalDateTime.class));
+                cochera.setEstadoCochera(EstadoCochera.valueOf(rs.getString("estado")));
+
+//                obtengo la patente y la descripcion del vehiculo
+                String descripcion = rs.getString("descripcion");
+                String patente = rs.getString("patente");
+
+//                reconstruyo el vehiculo
+                Vehiculo vehiculo = switch (descripcion) {
+                    case "Sedan" -> new Sedan(patente);
+                    case "SUV" -> new Suv(patente);
+                    case "Pickup" -> new Pickup(patente);
+                    default -> null; // o podrías lanzar una excepción si querés evitar nulos
+                };
+
+                cochera.setVehiculo(vehiculo); // asigno vehiculo
+                cochera.setContrato(new TipoContratoDAO().read(rs.getInt("id_tipo_contrato")).getEntity());
+                cochera.setServicio(new ServicioDAO().read(rs.getInt("id_servicio")).getEntity());
+                cochera.setVehiculo(vehiculo); // primero le pasás el vehículo como objeto
+
+                return new Response<>(true, "Cochera encontrada", cochera);
+            }else{
+                return new Response<>(false, "No se encontró la cochera", null);
+            }
+        }catch (SQLException e){
+            return new Response<>(false, "Error al obtener cochera: " + e.getMessage(), null);
+        }
     }
 
     @Override

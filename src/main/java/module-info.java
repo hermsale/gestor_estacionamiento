@@ -15,4 +15,5 @@ module com.example.gestorestacionamientofx {
     exports com.example.gestorestacionamientofx;
     exports com.example.gestorestacionamientofx.Controller;
     opens com.example.gestorestacionamientofx.Controller to javafx.fxml;
+    opens com.example.gestorestacionamientofx.Model to javafx.fxml, javafx.base;
 }

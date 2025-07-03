@@ -20,7 +20,6 @@ public class ServicioDAO extends BaseDAO<Servicio> {
         List<Servicio> lista = new ArrayList<>();
         String sql = "SELECT * FROM servicio";
 
-        System.out.println("Consultando todos los servicios ");
         try (PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
@@ -30,14 +29,8 @@ public class ServicioDAO extends BaseDAO<Servicio> {
                 servicio.setId_servicio(rs.getInt("id_servicio"));
                 servicio.setDescripcionServicio(rs.getString("descripcion_servicio"));
                 servicio.setCostoServicio(rs.getBigDecimal("precio_base"));
-
-                System.out.println("Servicio leído: id=" + servicio.getId_servicio()
-                        + ", desc=" + servicio.getDescripcionServicio()
-                        + ", costo=" + servicio.getCostoServicio());
                 lista.add(servicio);
             }
-
-            System.out.println("List " +lista.size() + " servicios encontrados" );
             return new Response<List<Servicio>>(true, "Tipos de servicios obtenidos", lista);
 
         } catch (SQLException e) {
@@ -48,22 +41,21 @@ public class ServicioDAO extends BaseDAO<Servicio> {
 //    metodo implementado para que lo obtenga el CocheraDAO
     @Override
     public Response<Servicio> read(int id) {
-        Servicio  servicio = new Servicio();
         String sql = "SELECT * FROM servicio WHERE id_servicio = ?";
 
-        try(PreparedStatement stmt = conn.prepareStatement(sql);
-            ResultSet rs = stmt.executeQuery())
-        {
+        try(PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.setInt(1, id);
-            if (rs.next()) {
-                servicio.setId_servicio(rs.getInt("id_servicio"));
-                servicio.setDescripcionServicio(rs.getString("descripcion_servicio"));
-                servicio.setCostoServicio(rs.getBigDecimal("precio_base"));
+            try( ResultSet rs = stmt.executeQuery()){
+                if (rs.next()) {
+                    Servicio  servicio = new Servicio();
+                    servicio.setId_servicio(rs.getInt("id_servicio"));
+                    servicio.setDescripcionServicio(rs.getString("descripcion_servicio"));
+                    servicio.setCostoServicio(rs.getBigDecimal("precio_base"));
+                    return new Response<>(true, "Tipo de servicio obtenido", servicio);
+                }else{
 
-            return new Response<>(true, "Tipo de servicio obtenido", servicio);
-            }else{
-
-                return new Response<>(false, "No se encontro el servicio", null);
+                    return new Response<>(false, "No se encontro el servicio", null);
+                }
             }
         }catch(SQLException e){
             return new Response<>(false, "Error al obtener tipos de servicios: " + e.getMessage(), null);

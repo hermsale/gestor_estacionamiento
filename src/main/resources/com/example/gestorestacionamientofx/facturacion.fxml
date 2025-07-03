@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane alignment="center" hgap="10" prefHeight="607.0" prefWidth="1268.0" vgap="10" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.example.gestorestacionamientofx.Controller.FacturacionController">
+
+    <!-- Título -->
+    <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Reporte de Facturación" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0" />
+
+    <!-- Tabla de Facturación -->
+    <TableView fx:id="tablaFacturas" prefHeight="500" prefWidth="1241.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+
+        <columns>
+            <TableColumn fx:id="colFechaEmision" prefWidth="120" text="Fecha Emisión" />
+            <TableColumn fx:id="colPatente" prefWidth="100" text="Patente" />
+            <TableColumn fx:id="colTipoVehiculo" prefWidth="100" text="Tipo Vehículo" />
+            <TableColumn fx:id="colCochera" prefWidth="80" text="Cochera" />
+            <TableColumn fx:id="colContrato" prefWidth="100" text="Contrato" />
+            <TableColumn fx:id="colIngreso" prefWidth="130" text="Ingreso" />
+            <TableColumn fx:id="colEgreso" prefWidth="130" text="Egreso" />
+            <TableColumn fx:id="colDuracion" prefWidth="100" text="Duración" />
+            <TableColumn fx:id="colServicio" prefWidth="130" text="Servicio" />
+            <TableColumn fx:id="colDescuento" prefWidth="80" text="Descuento %" />
+            <TableColumn fx:id="colMonto" prefWidth="100" text="Monto" />
+        </columns>
+    </TableView>
+   <columnConstraints>
+      <ColumnConstraints />
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+      <RowConstraints />
+   </rowConstraints>
+
+</GridPane>

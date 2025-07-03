@@ -20,13 +20,13 @@ public class MenuPrincipalController {
     public void initialize() {
         btnIngresar.setOnAction(this::abrirVistaIngresoVehiculo);
         btnCerrarSesion.setOnAction(e -> cerrarVentanaActual());
-        // btnRetirar y btnReportes los agregás después
+        btnReportes.setOnAction(this::abrirVistaFacturacion);
         btnRetirar.setOnAction(this::abrirVistaRetiroVehiculo);
     }
 
     private void abrirVistaIngresoVehiculo(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/gestorestacionamientofx/vehiculo_form.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/gestorestacionamientofx/ingreso_vehiculo.fxml"));
             Parent root = loader.load();
 
             Stage stage = new Stage();
@@ -57,8 +57,38 @@ public class MenuPrincipalController {
             System.out.println("❌ No se pudo cargar la vista de cochera: " + e.getMessage());
         }
     }
-    private void cerrarVentanaActual() {
-        Stage stage = (Stage) btnCerrarSesion.getScene().getWindow();
-        stage.close();
+
+    private void abrirVistaFacturacion(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/gestorestacionamientofx/facturacion.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Reporte de Facturación");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("❌ No se pudo cargar la vista de facturación: " + e.getMessage());
+        }
     }
+
+    @FXML
+    private void cerrarVentanaActual() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/gestorestacionamientofx/Login.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) btnCerrarSesion.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Inicio de Sesión");
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

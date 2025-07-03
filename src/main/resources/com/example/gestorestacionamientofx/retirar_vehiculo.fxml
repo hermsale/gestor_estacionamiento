@@ -34,7 +34,7 @@
             style="-fx-background-color: red; -fx-text-fill: black; -fx-font-weight: bold;"
             GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.halignment="LEFT" />
 
-    <!-- Detalles (al principio vacíos) -->
+    <!-- Detalles -->
     <Label fx:id="lblEspacioOcupado" GridPane.columnIndex="1" GridPane.rowIndex="3" />
     <Label fx:id="lblTipoContrato" GridPane.columnIndex="1" GridPane.rowIndex="4" />
     <Label fx:id="lblHoraIngreso" GridPane.columnIndex="1" GridPane.rowIndex="5" />

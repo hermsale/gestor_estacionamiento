@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
@@ -18,7 +19,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class CocheraController {
+public class IngresoController {
     Cochera  cochera = new Cochera();
     @FXML
     private TextField patenteField;
@@ -43,7 +44,7 @@ public class CocheraController {
         TipoContratoDAO tipoContratoDAO = new TipoContratoDAO();
 
 
-//      traigo los servicios del controller
+//      traigo los servicios del controller para completar los comboBox
         Response<List<Servicio>> servicioResponse = servicioDAO.readAll();
         Response<List<TipoContrato>> contratoResponse = tipoContratoDAO.readAll();
 
@@ -51,23 +52,20 @@ public class CocheraController {
             servicioComboBox.getItems().addAll(servicioResponse.getEntity());
         }
 
-        System.out.println("--------- SERVICIOS ---------");
-        System.out.println("Éxito: " + servicioResponse.isSuccess());
-        System.out.println("Mensaje: " + servicioResponse.getMessage());
-        System.out.println("Contenido: " + servicioResponse.getEntity());
         if(contratoResponse.isSuccess()) {
             tipoContratoComboBox.getItems().addAll(contratoResponse.getEntity());
         }
 
     }
 
+//    logica para asignar una cochera
    @FXML
    public void asignarCochera(){
        //        Esto es propio de la clase Cochera
 
        System.out.println("asignando cochera");
        try {
-//           traigo lo que se envia de plano_estacionamiento
+//           traigo plano_estacionamiento
            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/gestorestacionamientofx/plano_estacionamiento.fxml"));
            Parent root = loader.load();
 
@@ -79,6 +77,7 @@ public class CocheraController {
            Response<List<Cochera>> response = cocheraDAO.readEstado();
 
            if (response.isSuccess()) {
+//               seteo la lista de cocheras
                planoController.setListaCocheras(response.getEntity());
                planoController.pintarCocherasPorEstado(); // ⚠️ Importante: pintás una vez cargado
            } else {
@@ -144,11 +143,17 @@ public class CocheraController {
 
             // Actualizo en la base de datos
             CocheraDAO cocheraDAO = new CocheraDAO();
-            Response<Cochera> resp = cocheraDAO.update(cochera);
+            Response<Cochera> resp = cocheraDAO.ingresarVehiculo(cochera);
+
 
             // Mensaje de resultado
             if (resp.isSuccess()) {
                 System.out.println("✅ " + resp.getMessage());
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Exito");
+                alert.setHeaderText(null);
+                alert.setContentText("La patente '" + patente + "' se ingresó correctamente.");
+                alert.showAndWait();
             } else {
                 System.out.println("❌ " + resp.getMessage());
             }
