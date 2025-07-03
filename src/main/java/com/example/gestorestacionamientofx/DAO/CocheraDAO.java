@@ -227,9 +227,23 @@ public Response<Integer> obtenerIdPorPatente(String patente) {
                 };
 
                 cochera.setVehiculo(vehiculo); // asigno vehiculo
-                cochera.setContrato(new TipoContratoDAO().read(rs.getInt("id_tipo_contrato")).getEntity());
-                cochera.setServicio(new ServicioDAO().read(rs.getInt("id_servicio")).getEntity());
-                cochera.setVehiculo(vehiculo); // primero le pasás el vehículo como objeto
+                int idContrato = rs.getInt("id_tipo_contrato");
+                if (!rs.wasNull()) {
+                    Response<TipoContrato> contratoResp = new TipoContratoDAO().read(idContrato);
+                    if (contratoResp.isSuccess()) {
+                        cochera.setContrato(contratoResp.getEntity());
+                    }
+                }
+//                cochera.setContrato(new TipoContratoDAO().read(rs.getInt("id_tipo_contrato")).getEntity());
+                int idServicio = rs.getInt("id_servicio");
+                if (!rs.wasNull()) {
+                    Response<Servicio> servicioResp = new ServicioDAO().read(idServicio);
+                    if (servicioResp.isSuccess()) {
+                        cochera.setServicio(servicioResp.getEntity());
+                    }
+                }
+//                cochera.setServicio(new ServicioDAO().read(rs.getInt("id_servicio")).getEntity());
+//                cochera.setVehiculo(vehiculo); // primero le pasás el vehículo como objeto
 
                 return new Response<>(true, "Cochera encontrada", cochera);
             }else{
