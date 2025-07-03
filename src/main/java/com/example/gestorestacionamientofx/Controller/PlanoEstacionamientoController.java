@@ -1,9 +1,6 @@
 package com.example.gestorestacionamientofx.Controller;
 
-import com.example.gestorestacionamientofx.Model.Pickup;
-import com.example.gestorestacionamientofx.Model.Sedan;
-import com.example.gestorestacionamientofx.Model.Suv;
-import com.example.gestorestacionamientofx.Model.Vehiculo;
+import com.example.gestorestacionamientofx.Model.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
@@ -11,6 +8,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class PlanoEstacionamientoController {
 
@@ -27,6 +25,13 @@ public class PlanoEstacionamientoController {
 //    este metodo sera usado desde el CocheraController
     public int getCocheraSeleccionada() {
         return cocheraSeleccionada;
+    }
+
+//    vamos a listar las cocheras,
+    private List<Cochera> listaCocheras;
+
+    public void setListaCocheras(List<Cochera> listaCocheras) {
+        this.listaCocheras = listaCocheras;
     }
 
     @FXML
@@ -62,6 +67,23 @@ public class PlanoEstacionamientoController {
         // Cerrar ventana
         Stage stage = (Stage) ingresoVehiculo.getScene().getWindow();
         stage.close();
+    }
+//    metodo para pintar las cocheras de colores
+    public void pintarCocherasPorEstado() {
+        if (listaCocheras == null) return;
+
+        for (Cochera c : listaCocheras) {
+            Button btn = botonesCocheras.get(c.getCodigoCochera());
+            if (btn != null) {
+                if (c.getEstadoCochera() == EstadoCochera.OCUPADO) {
+                    btn.setStyle("-fx-background-color: red;");
+                    btn.setDisable(true); // ❌ No se puede seleccionar
+                } else {
+                    btn.setStyle("-fx-background-color: green;");
+                    btn.setDisable(false); // ✅ Disponible y seleccionable
+                }
+            }
+        }
     }
 
 }

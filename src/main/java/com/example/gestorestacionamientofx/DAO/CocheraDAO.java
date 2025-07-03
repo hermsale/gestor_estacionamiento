@@ -15,12 +15,11 @@ public class CocheraDAO extends BaseDAO<Cochera> {
     TipoContratoDAO contratoDAO = new TipoContratoDAO();
     ServicioDAO servicioDAO = new ServicioDAO();
 
-//    me falta instanciar esto . crearlo.
-//    VehiculoDAO vehiculoDAO = new VehiculoDAO();
+
     @Override
     public Response<List<Cochera>> readAll() {
         List<Cochera> cocheras = new ArrayList<>();
-        String sql = "SELECT * FROM cocheras";
+        String sql = "SELECT * FROM cochera";
 
         try(PreparedStatement stmt = conn.prepareStatement(sql);
         ResultSet rs = stmt.executeQuery()){
@@ -35,7 +34,7 @@ public class CocheraDAO extends BaseDAO<Cochera> {
                 cochera.setCodigoCochera(rs.getInt("codigo_cochera"));
 
 //                traigo lo que este en el enum de estado
-                String estadoStr = rs.getString("estado");
+                String estadoStr = rs.getString("estado").toUpperCase();
                 EstadoCochera estado = EstadoCochera.valueOf(estadoStr); // convierto String a Enum
                 cochera.setEstadoCochera(estado); // lo setea en el objeto
 
@@ -91,6 +90,35 @@ public class CocheraDAO extends BaseDAO<Cochera> {
         }
     }
 
+//metodo para cargar el estado de cada cochera
+    public Response<List<Cochera>> readEstado() {
+        List<Cochera> cocheras = new ArrayList<>();
+        String sql = "SELECT codigo_cochera, estado FROM cochera";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Cochera cochera = new Cochera();
+                cochera.setCodigoCochera(rs.getInt("codigo_cochera"));
+
+                String estadoStr = rs.getString("estado");
+                if (estadoStr != null) {
+                    EstadoCochera estado = EstadoCochera.valueOf(estadoStr.toUpperCase());
+                    cochera.setEstadoCochera(estado);
+                } else {
+                    cochera.setEstadoCochera(null);
+                }
+
+                cocheras.add(cochera);
+            }
+
+            return new Response<List<Cochera>>(true, "Estados obtenidos correctamente", cocheras);
+        } catch (SQLException e) {
+            return new Response<>(false, "Error al obtener estados: " + e.getMessage(), null);
+        }
+    }
+
     @Override
     public Response<Cochera> delete(int id) {
         return null;
@@ -109,7 +137,7 @@ public class CocheraDAO extends BaseDAO<Cochera> {
             stmt.setString(5, cochera.getVehiculo().getPatente());
             stmt.setString(6, cochera.getVehiculo().getDescripcion()); // tipo de vehiculo
             stmt.setBigDecimal(7, BigDecimal.valueOf(cochera.getVehiculo().obtenerRecargo())); // recargo
-            stmt.setInt(8, cochera.getcodigoCochera());
+            stmt.setInt(8, cochera.getCodigoCochera());
 
             int filas = stmt.executeUpdate();
             if (filas > 0) {

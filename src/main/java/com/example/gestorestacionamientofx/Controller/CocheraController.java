@@ -65,8 +65,6 @@ public class CocheraController {
    public void asignarCochera(){
        //        Esto es propio de la clase Cochera
 
-
-
        System.out.println("asignando cochera");
        try {
 //           traigo lo que se envia de plano_estacionamiento
@@ -74,6 +72,18 @@ public class CocheraController {
            Parent root = loader.load();
 
            PlanoEstacionamientoController planoController = loader.getController();
+
+//           declaro el cocheraDAO para acceder a sus metodos
+           CocheraDAO cocheraDAO = new CocheraDAO();
+//           obtengo el valor de estado_cochera con esta query
+           Response<List<Cochera>> response = cocheraDAO.readEstado();
+
+           if (response.isSuccess()) {
+               planoController.setListaCocheras(response.getEntity());
+               planoController.pintarCocherasPorEstado(); // ⚠️ Importante: pintás una vez cargado
+           } else {
+               System.out.println("❌ Error al obtener cocheras: " + response.getMessage());
+           }
 
            Stage stage = new Stage();
            stage.setTitle("Plano del Estacionamiento");
@@ -120,7 +130,7 @@ public class CocheraController {
 
             System.out.println("Tipo Contrato: "+tipoContratoComboBox.getValue());
             System.out.println("Tipo Servicio: "+tipoComboBox.getValue());
-            System.out.println("codigo cochera: "+cochera.getcodigoCochera());
+            System.out.println("codigo cochera: "+cochera.getCodigoCochera());
             // Seteo datos en el objeto cochera
             cochera.setVehiculo(vehiculo);
             cochera.setContrato(tipoContratoComboBox.getValue());

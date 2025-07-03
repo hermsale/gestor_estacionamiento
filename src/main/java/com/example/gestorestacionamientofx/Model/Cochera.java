@@ -37,7 +37,7 @@ public class Cochera {
         this.id_cochera = id_cochera;
     }
 
-    public int getcodigoCochera() {
+    public int getCodigoCochera() {
         return codigoCochera;
     }
 

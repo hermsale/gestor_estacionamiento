@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane xmlns="http://javafx.com/javafx/23.0.1"
+          xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="com.example.gestorestacionamientofx.Controller.RetirarVehiculoController"
+          alignment="CENTER" hgap="10" vgap="10"
+          style="-fx-background-color: #f9f4e7;" prefWidth="500" prefHeight="400">
+
+    <columnConstraints>
+        <ColumnConstraints minWidth="150" />
+        <ColumnConstraints minWidth="300" />
+    </columnConstraints>
+
+    <!-- Título -->
+    <Label text="Retirar Vehículo"
+           style="-fx-font-size: 20px; -fx-font-weight: bold;"
+           GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2"
+           GridPane.halignment="CENTER" />
+
+    <!-- Patente -->
+    <Label text="Patente:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+    <TextField fx:id="patenteField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+    <!-- Botón Retirar -->
+    <Button fx:id="btnRetirar"
+            text="Retirar"
+            style="-fx-background-color: red; -fx-text-fill: black; -fx-font-weight: bold;"
+            GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.halignment="LEFT" />
+
+    <!-- Detalles (al principio vacíos) -->
+    <Label fx:id="lblEspacioOcupado" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+    <Label fx:id="lblTipoContrato" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+    <Label fx:id="lblHoraIngreso" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+    <Label fx:id="lblHoraRetiro" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+    <Label fx:id="lblDuracion" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+    <Label fx:id="lblServicio" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+    <Label fx:id="lblDescuento" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+    <Label fx:id="lblPrecioFinal" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+
+</GridPane>
