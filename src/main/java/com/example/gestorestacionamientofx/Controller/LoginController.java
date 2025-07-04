@@ -22,6 +22,7 @@ public class LoginController {
 
     @FXML
     private void handleLogin() {
+//        se genero un login provisorio, en donde las credenciales estan hardcodiadas. Y no hace uso de la BD.
         String usuario = txtUsuario.getText();
         String password = txtPassword.getText();
 

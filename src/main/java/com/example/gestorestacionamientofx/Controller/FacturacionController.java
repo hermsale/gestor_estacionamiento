@@ -72,6 +72,7 @@ public class FacturacionController {
         colMonto.setCellValueFactory(new PropertyValueFactory<>("monto_total"));
     }
 
+//    metodo para cargar todas las facturas almacenadas en la BD
     private void cargarDatos() {
         FacturacionDAO facturacionDAO = new FacturacionDAO();
         Response<List<Facturacion>> resp = facturacionDAO.readAll();

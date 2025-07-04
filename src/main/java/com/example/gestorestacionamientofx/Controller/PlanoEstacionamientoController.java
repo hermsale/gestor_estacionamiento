@@ -68,7 +68,7 @@ public class PlanoEstacionamientoController {
         Stage stage = (Stage) ingresoVehiculo.getScene().getWindow();
         stage.close();
     }
-//    metodo para pintar las cocheras de colores
+//    metodo para pintar las cocheras de colores - se carga al principio desde la ventana de ingresoController
     public void pintarCocherasPorEstado() {
         if (listaCocheras == null) return;
 

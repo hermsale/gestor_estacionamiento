@@ -146,7 +146,7 @@ public class RetirarVehiculoController {
         lblPrecioFinal.setText("Recargo por tipo de vehiculo: $"+recargoCochera);
         lblPrecioFinal.setText("Precio contrato: $"+precioTotal);
 
-//        creamos una factura
+//        creamos una factura - que se guardara en la BD
         Facturacion factura = new Facturacion();
         factura.setFecha_factura(LocalDateTime.now());
         factura.setCodigo_cochera(cochera.getCodigoCochera());
@@ -162,6 +162,7 @@ public class RetirarVehiculoController {
 
 //        traemos el metodo para crear la factura
         FacturacionDAO facturaDAO = new FacturacionDAO();
+//        guardamos la factura en la BD en la tabla facturacion
         Response<Facturacion> respFactura = facturaDAO.create(factura);
         if (!respFactura.isSuccess()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);

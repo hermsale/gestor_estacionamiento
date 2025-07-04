@@ -18,10 +18,14 @@ public class MenuPrincipalController {
 
     @FXML
     public void initialize() {
+//        1) vista para ingresar vehiculos -> ingreso_vehiculo
         btnIngresar.setOnAction(this::abrirVistaIngresoVehiculo);
-        btnCerrarSesion.setOnAction(e -> cerrarVentanaActual());
-        btnReportes.setOnAction(this::abrirVistaFacturacion);
+//        2) vista para retirar y facturar un contrato -> retirar_vehiculo
         btnRetirar.setOnAction(this::abrirVistaRetiroVehiculo);
+//        3) vista para acceder al historial de facturacion -> facturacion
+        btnReportes.setOnAction(this::abrirVistaFacturacion);
+//        4) cierra la app
+        btnCerrarSesion.setOnAction(e -> cerrarVentanaActual());
     }
 
     private void abrirVistaIngresoVehiculo(ActionEvent event) {

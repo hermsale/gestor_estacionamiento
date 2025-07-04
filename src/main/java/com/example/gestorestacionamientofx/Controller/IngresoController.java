@@ -44,7 +44,7 @@ public class IngresoController {
         TipoContratoDAO tipoContratoDAO = new TipoContratoDAO();
 
 
-//      traigo los servicios del controller para completar los comboBox
+//      traigo los servicios del controller para completar los comboBox de la vista
         Response<List<Servicio>> servicioResponse = servicioDAO.readAll();
         Response<List<TipoContrato>> contratoResponse = tipoContratoDAO.readAll();
 
@@ -61,7 +61,6 @@ public class IngresoController {
 //    logica para asignar una cochera
    @FXML
    public void asignarCochera(){
-       //        Esto es propio de la clase Cochera
 
        System.out.println("asignando cochera");
        try {
@@ -73,13 +72,13 @@ public class IngresoController {
 
 //           declaro el cocheraDAO para acceder a sus metodos
            CocheraDAO cocheraDAO = new CocheraDAO();
-//           obtengo el valor de estado_cochera con esta query
+//           obtengo el valor de estado_cochera con esta query - sirve para pintar que cochera esta ocupada y cual disponible
            Response<List<Cochera>> response = cocheraDAO.readEstado();
 
            if (response.isSuccess()) {
 //               seteo la lista de cocheras
                planoController.setListaCocheras(response.getEntity());
-               planoController.pintarCocherasPorEstado(); // ⚠️ Importante: pintás una vez cargado
+               planoController.pintarCocherasPorEstado(); // pintos las cocheras una vez cargado
            } else {
                System.out.println("❌ Error al obtener cocheras: " + response.getMessage());
            }
@@ -146,7 +145,7 @@ public class IngresoController {
             Response<Cochera> resp = cocheraDAO.ingresarVehiculo(cochera);
 
 
-            // Mensaje de resultado
+            // muestro por pantalla una ventana, indicando que se agrego el vehiculo
             if (resp.isSuccess()) {
                 System.out.println("✅ " + resp.getMessage());
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
