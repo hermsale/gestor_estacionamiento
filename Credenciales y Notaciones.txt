@@ -1,0 +1,38 @@
+Credenciales para acceder al login:
+usuario: admin
+password: admin
+
+Hay 3 opciones:
+	1) Ingresar vehiculo 
+
+Esta opción solicita tipo de contrato, patente, tipo de vehiculo, y servicio. Y se debe asignar manualmente la cochera. Las cocheras ocupadas están marcadas en rojo. y las disponibles en verde. 
+una vez seleccionado todo, se debe presionar 'Registrar'
+De esta manera, se registra en la BD y ocupa un espacio en la cochera con los datos ingresados.
+
+	2) Retirar Vehiculo
+Esta opción solicita una patente ya registrada, para poder hacer el checkout del vehiculo, informando los detalles de la estadía e importe a abonar. Si se indica una patente no registrada, lo informa.
+Una vez registrado el checkout, se libera la cochera y se guarda los datos en facturación.
+	
+	3) Acceder a Reportes
+Esta opción es un historial, muestra los reportes de facturación registrados, indicando su fecha de emisión, patente, tipo de vehiculo, etc. Indica el monto final que se abono, y si se aplico algún descuento.
+
+
+En el SQL se cargaron algunos INSERT de cocheras OCUPADAS, para probar el retiro de vehículo y visualizar el reporte. 
+
+A continuación las patentes que se pueden realizar RETIRO, su tipo de vehículo y el tipo de contrato que tiene.
+Patente	Tipo de Vehículo	Tipo de Contrato
+ABC123	Sedan			Por Hora
+XYZ456	SUV			Por Día
+JKL789	Pickup			Por Mes
+LMN321	Sedan			Por Hora
+QWE654	SUV			Por Día
+RTY987	Pickup			Por Mes
+UIO159	Sedan			Por Hora
+PAS753	SUV			Por Día
+GFD852	Pickup			Por Mes
+HJK963	SUV			Por Hora
+MNB741	Sedan			Por Día
+ZXC258	Pickup			Por Mes
+VBN369	Sedan			Por Hora
+PLM147	SUV			Por Día
+YHN951	Pickup			Por Mes
