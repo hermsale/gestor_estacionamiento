@@ -1,4 +1,14 @@
+
+Crear y poblar la BD ejecutando el insertGestor.sql
+Es un código MySQL que se creo con MySQLWorkbench
+
+Se tiene que importar el proyecto en InteliJ con JavaFX
+Se utilizo JDK 22
+
+Para ejecutar la aplicación, ejecutar el archivo App
+
 LEER Credenciales y Notaciones.txt
+
 Credenciales para acceder al login:
 usuario: admin
 password: admin
