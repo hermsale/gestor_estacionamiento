@@ -1,4 +1,5 @@
 Crear y poblar la BD ejecutando el insertGestor.sql
+Se tiene que importar el proyecto en InteliJ con JavaFX
 
 Credenciales para acceder al login:
 usuario: admin
