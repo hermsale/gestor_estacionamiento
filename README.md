@@ -13,7 +13,7 @@ Hay 3 opciones:
 	Esta opción solicita una patente ya registrada, para poder hacer el checkout del vehiculo, informando los detalles de la estadía e importe a abonar. Si se indica una patente no registrada, lo informa.
 	Una vez registrado el checkout, se libera la cochera y se guarda los datos en facturación.
 	
-	3) Acceder a Reportes
+3) Acceder a Reportes
 	Esta opción es un historial, muestra los reportes de facturación registrados, indicando su fecha de emisión, patente, tipo de vehiculo, etc. Indica el monto final que se abono, y si se aplico algún descuento.
 
 
