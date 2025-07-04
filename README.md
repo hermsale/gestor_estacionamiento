@@ -1,15 +1,12 @@
-Se agrego la imagen del modelo logico de la BD. 
+Tener descargado e instalado el https://dev.mysql.com/downloads/file/?id=538917
 
-Crear y poblar la BD ejecutando el insertGestor.sql
-Es un código MySQL que se creo con MySQLWorkbench
+Crear y poblar la BD ejecutando el insertGestor.sql - Es un código MySQL que se creo con MySQLWorkbench
 
-Se tiene que importar el proyecto en InteliJ con JavaFX
-Se utilizo JDK 22
+Se tiene que clonar el repo del proyecto en InteliJ, con JavaFX. Se utilizo JDK 22
 
 Para ejecutar la aplicación, ejecutar el archivo App
 
-LEER Credenciales y Notaciones.txt
-
+Se agrego la imagen del modelo logico de la BD.
 Credenciales para acceder al login:
 usuario: admin
 password: admin
