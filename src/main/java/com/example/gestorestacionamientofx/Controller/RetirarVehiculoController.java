@@ -89,9 +89,6 @@ public class RetirarVehiculoController {
 //        se calcula la duracion entre el ingreso y el egreso
         Duration duracion = Duration.between(fecha_ingreso, fecha_egreso);
 
-        // Calculo de tiempo (en horas o días)
-//        long minutos = duracion.toMinutes();
-//        long horas = (minutos + 59) / 60; // redondea hacia arriba
 
 //        datos de la cochera - obtengo el nombre del contrato
         String tipoContrato = cochera.getContrato().getNombreContrato();
@@ -100,7 +97,8 @@ public class RetirarVehiculoController {
 //        tomo el tipo de contrato y lo paso a minuscula
         switch (tipoContrato.toLowerCase()) {
             case "por hora" -> {
-                long horas = Math.max(2, (duracion.toMinutes() + 59) / 60); // redondeo hacia arriba y mínimo 2
+                // redondeo hacia arriba y minimo 2 horas  se le va a cobrar
+                long horas = Math.max(2, (duracion.toMinutes() + 59) / 60);
                 textoDuracion = "Duración: " + horas + " hora/s";
                 lblDuracion.setText(textoDuracion);
                 precioFinal = precioBaseContrato * horas;
