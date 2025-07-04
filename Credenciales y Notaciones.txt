@@ -1,4 +1,6 @@
-Crear y poblar la BD ejecutando el insertGestor.sql
+1-Se tiene que tener instalado Maven, y realizar un MVN INSTALL
+2-Crear y poblar la BD ejecutando el insertGestor.sql
+Es un código MySQL que se creo con MySQLWorkbench
 
 Se tiene que importar el proyecto en InteliJ con JavaFX
 Se utilizo JDK 22
