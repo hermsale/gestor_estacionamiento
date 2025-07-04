@@ -1,3 +1,4 @@
+Se agrego la imagen del modelo logico de la BD. 
 
 Crear y poblar la BD ejecutando el insertGestor.sql
 Es un código MySQL que se creo con MySQLWorkbench
