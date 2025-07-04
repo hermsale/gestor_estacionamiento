@@ -1,3 +1,4 @@
+LEER Credenciales y Notaciones.txt
 Credenciales para acceder al login:
 usuario: admin
 password: admin
