@@ -58,13 +58,11 @@ public class PlanoEstacionamientoController {
             }
         }
 
-        // Acá podrías cargar estado desde BD y pintar rojos los ocupados
     }
 
+//    selecciono la cochera y cierro la ventana
     public void seleccionarCochera(int numero) {
         this.cocheraSeleccionada = numero;
-
-        // Cerrar ventana
         Stage stage = (Stage) ingresoVehiculo.getScene().getWindow();
         stage.close();
     }
@@ -75,10 +73,12 @@ public class PlanoEstacionamientoController {
         for (Cochera c : listaCocheras) {
             Button btn = botonesCocheras.get(c.getCodigoCochera());
             if (btn != null) {
+//            si el estado de la cochera es OCUPADO, lo pinta en rojo y lo deshabilita
                 if (c.getEstadoCochera() == EstadoCochera.OCUPADO) {
                     btn.setStyle("-fx-background-color: red;");
                     btn.setDisable(true); // ❌ No se puede seleccionar
                 } else {
+//                    si el estado de la cochera es DISPONIBLE lo pinta de verde y lo habilita
                     btn.setStyle("-fx-background-color: green;");
                     btn.setDisable(false); // ✅ Disponible y seleccionable
                 }

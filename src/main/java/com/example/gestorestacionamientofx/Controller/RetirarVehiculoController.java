@@ -77,7 +77,6 @@ public class RetirarVehiculoController {
 //        guardo en cochera lo que viene del entity de respCochera
         Cochera cochera = respCochera.getEntity();
 
-        double precioFinal = 0;
 
 //        Fecha ingreso, egreso y duracion
         LocalDateTime fecha_ingreso = cochera.getFechaIngreso();
@@ -89,7 +88,12 @@ public class RetirarVehiculoController {
 //        se calcula la duracion entre el ingreso y el egreso
         Duration duracion = Duration.between(fecha_ingreso, fecha_egreso);
 
-
+//        el precio final, representa el precio base con el calculo respectivo del tipo de contrato
+//        en esta primera instancia, verifico que tipo de contrato tiene, se calcula las politicas minimas de uso de la cochera
+//        ejemplo: por hora, minimo 2 horas se cobra.
+//        por dia, se cobra minimo 1 dia.
+//        se multiplica en cada caso la cantidad de horas y dias que, por el precio base. y se guarda
+        double precioFinal = 0;
 //        datos de la cochera - obtengo el nombre del contrato
         String tipoContrato = cochera.getContrato().getNombreContrato();
         double precioBaseContrato = cochera.getContrato().getPrecioBaseCochera().doubleValue(); // precio base del contrato
@@ -124,25 +128,43 @@ public class RetirarVehiculoController {
             }
         }
 
-        String servicioDescripcion = cochera.getServicio().getDescripcionServicio(); // nombre del contrato
+//        una vez guardado el monto a pagar, se le aplica los descuentos si los hubiese,. y se suma los recargos
+//        los recargos pueden ser, según el tipo de vehiculo: SUV tiene recargo del 10% PICKUP del 20%
+//        los descuentos es según el tipo de contrato.
+
+        String servicioDescripcion = cochera.getServicio().getDescripcionServicio(); // nombre del servicio
         double costoServicio = cochera.getServicio().getCostoServicio().doubleValue(); // guardo el costo del servicio
-        int descuentoServicio = cochera.getContrato().getDescuentoServicio().intValue(); // descuento de servicio
-        double recargoCochera = cochera.getVehiculo().obtenerRecargo();
+        int descuentoServicio = cochera.getContrato().getDescuentoServicio().intValue(); // descuento al servicio
+        double recargoCochera = cochera.getVehiculo().obtenerRecargo(); // obtengo el recargo segun SUV, Sedan o Pickup
+
+//        aplico el recargo a la cochera, segun el tipo de vehiculo ingresado
+        double precioConRecargo = precioFinal+(precioFinal * recargoCochera);
+//        aplico el descuento al servicio
+        double precioServicioConDescuento = costoServicio * (1 - descuentoServicio / 100.0);
+
+        double precioTotal = precioConRecargo + precioServicioConDescuento;
 
         // Aplico el descuento del tipo de contrato al servicio
-        double descuentoAplicado = precioFinal * (descuentoServicio / 100.0);
-        double precioConDescuento = precioFinal - descuentoAplicado;
+//        double descuentoAplicado = precioFinal * (descuentoServicio / 100.0);
+//        double precioConDescuento = precioFinal - descuentoAplicado;
 
 // Sumo el recargo por tipo de vehículo
-        double precioTotal = precioConDescuento + recargoCochera+costoServicio;
+//        double precioTotal = precioConDescuento + recargoCochera+costoServicio;
 
         lblEspacioOcupado.setText("Espacio ocupado: "+cochera.getCodigoCochera());
         lblTipoContrato.setText("Tipo de contrato: "+tipoContrato);
         lblHoraIngreso.setText("Fecha y Hora de ingreso: "+fecha_ingreso.format(formatter));
         lblHoraRetiro.setText("Fecha y Hura de retiro: "+fecha_egreso.format(formatter));
 
-        lblServicio.setText("Servicio solicitado: "+servicioDescripcion);
-        lblDescuento.setText("Descuento aplicado: "+descuentoServicio+"%");
+//        si no hay servicios contratados muestro un mensaje, de lo contrario especifico servicio y descuento si lo hubiese
+        if (servicioDescripcion.equals("Ninguno")){
+            lblServicio.setText("Sin servicio contratado");
+            lblDescuento.setText("No se aplica descuento");
+        } else {
+            lblServicio.setText("Servicio solicitado: " + servicioDescripcion);
+            lblDescuento.setText("Precio con descuento (" + descuentoServicio + "%): $" + String.format("%.2f", precioServicioConDescuento));
+        }
+
         lblPrecioFinal.setText("Recargo por tipo de vehiculo: $"+recargoCochera);
         lblPrecioFinal.setText("Precio contrato: $"+precioTotal);
 
